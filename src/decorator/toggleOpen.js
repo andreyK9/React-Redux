@@ -3,7 +3,7 @@ import React, {Component as ReactComponent} from 'react';
 export default (OriginalComponent) => 
   class WrapperComponent extends ReactComponent {
     state = {
-      isOpen: true
+      isOpen: false
     }
 
     render() {
