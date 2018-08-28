@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ArticleComments from './ArticleComments'
 
 export default class Article extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export default class Article extends Component {
         {isOpen ? 'close' : 'open'}
         </button>
         {this.getBody()}
+        <ArticleComments comments={article.comments} />
       </div>
     )
   }
