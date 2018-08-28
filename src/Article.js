@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import ArticleComments from './ArticleComments'
+import PropTypes from 'prop-types';
+import CommentList from './CommentList';
+
 
 export default class Article extends Component {
+  static propTypes = {
+    article: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      text: PropTypes.string
+    }).isRequired
+  }
+  
   constructor(props) {
     super(props)
 
@@ -21,7 +31,6 @@ export default class Article extends Component {
         {isOpen ? 'close' : 'open'}
         </button>
         {this.getBody()}
-        <ArticleComments comments={article.comments} />
       </div>
     )
   }
@@ -33,11 +42,14 @@ export default class Article extends Component {
   }
 
   getBody() {
+    if(!this.state.isOpen) return null;
     const {article} = this.props;
-    return this.state.isOpen ? 
-    <section>{article.text}</section> 
-    : 
-    null;
+    return (
+      <section>
+        {article.text}
+        <CommentList comments={article.comments} />
+      </section>
+    )
   }
 };
 
