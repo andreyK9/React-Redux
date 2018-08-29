@@ -32,7 +32,10 @@ class Article extends Component {
         {isOpen ? 'close' : 'open'}
         </button>
         <CSSTransitionGroup
+          component = 'div'
           transitionName = 'article'
+          transitionAppear
+          transitionAppearTimeout={500}
           transitionEnterTimeout={500}
           transitionLeaveTimeout={300} >
           {this.getBody()}
