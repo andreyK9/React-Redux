@@ -10,7 +10,7 @@ function Comment(props) {
   )
 }
 
-Comment.PropTypes = {
+Comment.propTypes = {
   comment: PropTypes.shape({
     text: PropTypes.string.isRequired,
     user: PropTypes.string.isRequired
