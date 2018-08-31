@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ArticleList from './ArticleList';
-import UserForm from './UserForm';
+import Counter from './Counter';
 import Filters from './Filters';
 
 class App extends Component {
@@ -9,14 +9,12 @@ class App extends Component {
     articles: PropTypes.array.isRequired
   };
 
-
-
   render() {
     const { articles }  = this.props
     return(
       <div>
-        <UserForm />
-        <Filters articles = {articles} />
+        <Counter />
+         <Filters articles = {articles} />
         <ArticleList 
           articles = {articles} defaultOpenId = {articles[0].id} />
       </div>
