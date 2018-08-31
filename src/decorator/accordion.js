@@ -2,7 +2,7 @@ import React from 'react'
 
 export default Component => class Accordion extends React.Component {
   state = {
-    openArticleId: null
+    openArticleId: this.props.defaultOpenId
   }
 
   render() {
