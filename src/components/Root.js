@@ -4,10 +4,10 @@ import App from './App';
 import { Provider } from 'react-redux'
 import store from '../store'
 
-function Root(props) {
+function Root() {
   return (
     <Provider store={store}>
-      <App {...props} />
+      <App />
     </Provider>
   )
 }
