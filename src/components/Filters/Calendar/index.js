@@ -9,10 +9,6 @@ class Calendar extends Component {
 
   };
 
-  static defaultProps = {
-    numberOfMonths: 2,
-  };
-
   state = {
     selection: null,
     from: null,
@@ -46,7 +42,6 @@ class Calendar extends Component {
           </div>
           <DayPicker
             className="Selectable"
-            numberOfMonths={this.props.numberOfMonths}
             selectedDays={[from, { from, to }]}
             modifiers={modifiers}
             onDayClick={this.handleDayClick} />
