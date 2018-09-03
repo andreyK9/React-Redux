@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {changeDateRange} from '../../../AC'
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import './style.css'
@@ -11,25 +13,20 @@ class Calendar extends Component {
 
   state = {
     selection: null,
-    from: null,
-    to: null
   }
 
 
 
   handleDayClick = day => {
-    const range = DateUtils.addDayToRange(day, this.state);
-    this.setState(range);
+    const {changeDateRange, dateRange} = this.props
+    const range = DateUtils.addDayToRange(day, dateRange);
+    console.log(range)
+    changeDateRange(range)
   }
-  handleResetClick = () => {
-    this.setState({
-      from: null,
-      to: null
-    });
-  }
-
+  
+    
   render() {
-    const { from, to } = this.state;
+    const { from, to } = this.props.dateRange;
     const modifiers = { start: from, end: to };
     const selectedDate = 
       from && 
@@ -49,4 +46,6 @@ class Calendar extends Component {
     )
   }
 }
-export default Calendar
+export default connect(({filters}) => ({
+  dateRange: filters.dateRange
+}), { changeDateRange } )(Calendar)

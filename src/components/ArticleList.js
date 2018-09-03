@@ -30,6 +30,13 @@ class ArticleList extends Component {
   }
 };
 
-export default connect(state => ({
-  articles: state.articles
-}))(accordion(ArticleList))
+export default connect(({filters, articles}) => {
+  if(!filters.selected.length) return {articles};
+
+  const selectedValue = filters.selected.map(select => 
+    select.value);
+  
+  return {articles: articles.filter(article =>{
+    return selectedValue.includes(article.id)
+  })}
+})(accordion(ArticleList))

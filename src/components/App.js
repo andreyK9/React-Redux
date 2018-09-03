@@ -6,15 +6,14 @@ import Filters from './Filters';
 
 class App extends Component {
   static propTypes = {
-    articles: PropTypes.array.isRequired
+
   };
 
   render() {
     return(
       <div>
         <Counter />
-         <Filters 
-          articles = {[]} />
+         <Filters />
         <ArticleList />
       </div>
     )

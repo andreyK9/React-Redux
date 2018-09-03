@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {changeSelected} from '../../AC';
 import Selected from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -8,15 +10,11 @@ class Select extends Component {
 
   };
 
-  state = {
-    selection: null
-  }
-
   render() {
-    const { selection } = this.state;
-    const options = this.props.articles.map(article => ({
+    const { articles, selection } = this.props;
+    const options = articles.map(article => ({
       label: article.title,
-      value: article.is
+      value: article.id
     }))
     return(
       <div>
@@ -29,6 +27,13 @@ class Select extends Component {
     )
   }
 
-  changeSelection = selection => this.setState({selection})
+  changeSelection = selection => {
+    const {changeSelected} = this.props
+
+    changeSelected(selection)
+  }
 }
-export default Select
+export default connect(state => ({
+  articles: state.articles,
+  selection: state.filters.selected
+}), { changeSelected } )(Select)
