@@ -29,9 +29,9 @@ function getBody(comments, isOpen) {
     return (
       <div className='Comments'>
         <ul>
-          {comments.map(comment => 
-            <li key={comment.id}>
-              <Comment comment={comment} />
+          {comments.map(id => 
+            <li key={id}>
+              <Comment id = {id} />
             </li>)}
         </ul>
         <UserForm />
