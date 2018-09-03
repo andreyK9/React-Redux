@@ -29,8 +29,9 @@ class Select extends Component {
 
   changeSelection = selection => {
     const {changeSelected} = this.props
+    const selectionId = selection.map(select => select.value)
 
-    changeSelected(selection)
+    changeSelected(selectionId)
   }
 }
 export default connect(state => ({

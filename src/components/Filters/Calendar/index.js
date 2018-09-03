@@ -20,10 +20,10 @@ class Calendar extends Component {
   handleDayClick = day => {
     const {changeDateRange, dateRange} = this.props
     const range = DateUtils.addDayToRange(day, dateRange);
-    console.log(range)
+
     changeDateRange(range)
   }
-  
+
     
   render() {
     const { from, to } = this.props.dateRange;
