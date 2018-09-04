@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {createComment} from '../AC';
+import uuid from 'uuid';
 
 const limits = {
   user: {
@@ -24,28 +27,54 @@ class UserForm extends Component {
 
   render() {
     const { user, text } = this.state
+
     return (
       <div>
         <h3>Add comment:</h3>
-        <div>Name:
-          <input
-            type="text"
-            value={ user }
-            onChange={ this.handleChange('user') } />
-        </div>
-        <br />
-        Text:
-        <div>
-          <textarea
-            name="comment"
-            cols="28"
-            rows="7"
-            onChange={ this.handleChange('text') }
-            value={ text } >
-          </textarea>
-        </div>
+        <form onSubmit={this.addNewComment}>
+          <label>Name:
+            <input
+              type="text"
+              value={ user }
+              onChange={ this.handleChange('user') } />
+          </label>
+          <br />
+          <br />
+          <label>
+            Text:
+            <input
+              type="text"
+              value={ text }
+              onChange={ this.handleChange('text') } />
+          </label>
+          <div>
+            <input type="submit" value="add comment"/>
+          </div>
+        </form>      
       </div>
     )
+  }
+
+  addNewComment = (evt) => {
+    evt.preventDefault()
+    const {user, text} = this.state
+    const {id, createComment} = this.props
+
+    const newComment = {
+      id: uuid(),
+      text: text,
+      user: user
+    }
+
+    setDefaultState()
+    createComment(newComment, id)
+  }
+
+  setDefaultState = () => {
+    this.setState({
+      user: '',
+      text: ''
+    })
   }
 
   handleChange = property => evt => {
@@ -53,8 +82,7 @@ class UserForm extends Component {
 
     if (value.length > limits[property].MAX) return;
 
-    style.borderColor = value.length < limits[property].MIN ?
-      'red' : null;
+    style.borderColor = value.length < limits[property].MIN ? 'red' : null;
 
     this.setState({
       [property]: value
@@ -63,4 +91,4 @@ class UserForm extends Component {
 }
 
 
-export default UserForm
+export default connect(null, { createComment })(UserForm)

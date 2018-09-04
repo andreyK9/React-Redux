@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import UserForm from './UserForm'
+import {connect} from 'react-redux';
+import UserForm from './UserForm';
 import Comment from './Comment';
 import toggleOpen from '../decorator/toggleOpen'
 
@@ -11,18 +12,18 @@ CommentList.propTypes = {
 }
 
 
-function CommentList({comments = [], isOpen, toggleOpen}) {
+function CommentList({comments = [], isOpen, toggleOpen, articleId}) {
     return (
       <div className='Comments'>
         <button onClick = {toggleOpen}>
           {isOpen ? 'hide comment' : 'show comment'}
         </button>
-        {getBody(comments, isOpen)}
+        {getBody(comments, isOpen, articleId)}
       </div>
     )
   }
 
-function getBody(comments, isOpen) {
+function getBody(comments, isOpen, articleId) {
     if(!isOpen) return null;
     if(!comments.length) return <p>No comments ...</p>;
   
@@ -34,7 +35,7 @@ function getBody(comments, isOpen) {
               <Comment id = {id} />
             </li>)}
         </ul>
-        <UserForm />
+        <UserForm id={articleId} />
       </div>
     )
   }
