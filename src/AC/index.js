@@ -3,7 +3,8 @@ import {
   INCREMENT,
   CHANGE_DATE_RANGE, 
   CHANGE_SELECTION,
-  CREATE_COMMENT
+  CREATE_COMMENT,
+  LOAD_ALL_ARTICLES
 } from '../constants'
 
 export function increment() {
@@ -38,5 +39,12 @@ export function createComment(newComment, articleId) {
     type: CREATE_COMMENT,
     payload: { newComment, articleId },
     generateId: true
+  }
+}
+
+export function loadAllArticles() {
+  return {
+    type: LOAD_ALL_ARTICLES,
+    callAPI: '/api/article'
   }
 }
