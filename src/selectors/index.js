@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import {mapToArr} from '../helpers'
 
 const filtersGetter = state => state.filters
-const articlesGetter = state => mapToArr(state.articles)
+const articlesGetter = state => state.articles.entities
 const commentsGetter = state => state.comments
 const idGetter = (state, props) => props.id
 
@@ -10,7 +10,7 @@ export const filtrateArticlesSelector =
   createSelector(articlesGetter, filtersGetter, (articles, filters) => {
     const { selected, dateRange: { from, to } } = filters
 
-    return articles.reduce((acum, article) => {
+    return mapToArr(articles).reduce((acum, article) => {
       const published = Date.parse(article.date)
 
       if ((!selected.length || selected.includes(article.id)) &&

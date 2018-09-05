@@ -36,6 +36,6 @@ class Select extends Component {
   }
 }
 export default connect(state => ({
-  articles: mapToArr(state.articles),
+  articles: mapToArr(state.articles.entities),
   selection: state.filters.selected
 }), { changeSelected } )(Select)
