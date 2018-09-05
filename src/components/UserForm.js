@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {createComment} from '../AC';
-import uuid from 'uuid';
 
 const limits = {
   user: {
@@ -61,12 +60,11 @@ class UserForm extends Component {
     const {id, createComment} = this.props
 
     const newComment = {
-      id: uuid(),
       text: text,
       user: user
     }
 
-    setDefaultState()
+    this.setDefaultState()
     createComment(newComment, id)
   }
 

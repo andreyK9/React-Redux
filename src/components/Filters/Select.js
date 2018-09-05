@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {changeSelected} from '../../AC';
+import {mapToArr} from '../../helpers'
 import Selected from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -12,9 +13,9 @@ class Select extends Component {
 
   render() {
     const { articles, selection } = this.props;
-    const options = Object.keys(articles).map(id => ({
-      label: articles[id].title,
-      value: id
+    const options = articles.map(article => ({
+      label: article.title,
+      value: article.id
     }))
     return(
       <div>
@@ -35,6 +36,6 @@ class Select extends Component {
   }
 }
 export default connect(state => ({
-  articles: state.articles,
+  articles: mapToArr(state.articles),
   selection: state.filters.selected
 }), { changeSelected } )(Select)
