@@ -17,22 +17,12 @@ class ArticleList extends Component {
   }
 
   componentDidMount() {
-    const {
-      loaded, 
-      loading, 
-      loadAllArticles
-    } = this.props
+    const { loaded, loading, loadAllArticles } = this.props
     if(!loading || !loaded)loadAllArticles()
   }
 
   render() {
-    const {
-      articles, 
-      openArticleId, 
-      toggleOpenArticle,
-      loading
-    } = this.props;
-
+    const { articles, openArticleId, toggleOpenArticle, loading } = this.props;
     if(loading) return <Loader />
     
     const articleElements = articles.map(article => 
