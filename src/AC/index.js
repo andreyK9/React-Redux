@@ -8,7 +8,8 @@ import {
   LOAD_ALL_ARTICLES,
   START,
   FAIL,
-  SUCCESS
+  SUCCESS,
+  LOAD_ARTICLE_COMMENTS
 } from '../constants'
 
 export function increment() {
@@ -81,3 +82,12 @@ export function loadArticle(id) {
 //       callAPI: `/api/article/${id}`
 //   }
 // }
+
+
+export function loadArticleComments(articleId) {
+  return {
+    type: LOAD_ARTICLE_COMMENTS,
+    payload: { articleId },
+    callAPI: `/api/comment?article=${articleId}`
+  }
+}

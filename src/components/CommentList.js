@@ -4,29 +4,49 @@ import {connect} from 'react-redux';
 import UserForm from './UserForm';
 import Comment from './Comment';
 import toggleOpen from '../decorator/toggleOpen'
-
-CommentList.propTypes = {
-  comments: PropTypes.array.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  toggleOpen: PropTypes.func.isRequired
-}
+import {loadArticleComments} from '../AC'
+import Loader from './Loader'
 
 
-function CommentList({comments = [], isOpen, toggleOpen, articleId}) {
+class CommentList extends React.Component {
+  static propTypes = {
+    article: PropTypes.object.isRequired,
+    // from toggleOpen
+    isOpen: PropTypes.bool.isRequired,
+    toggleOpen: PropTypes.func.isRequired
+  }
+
+  componentWillReceiveProps({isOpen, article, loadArticleComments}) {
+    if(!this.props.isOpen && isOpen && !article.commentsLoading && !article.commentsLoaded) {
+      loadArticleComments(article.id)
+    }
+  }
+
+  render(){
+    const {isOpen, toggleOpen, article} = this.props
+    
     return (
       <div className='Comments'>
         <button onClick = {toggleOpen}>
           {isOpen ? 'hide comment' : 'show comment'}
         </button>
-        {getBody(comments, isOpen, articleId)}
+        {this.getBody({isOpen, article})}
       </div>
     )
   }
 
-function getBody(comments, isOpen, articleId) {
+  getBody({isOpen, article:{comments = [], commentsLoading, commentsLoaded, id }}) {
     if(!isOpen) return null;
-    if(!comments.length) return <p>No comments ...</p>;
-  
+    if(commentsLoading) return <Loader />
+    if(!commentsLoaded) return null
+
+    if(!comments.length) return (
+      <div>
+        <p>No comments ...</p>;
+        <UserForm id={id} />
+      </div>
+    )
+      
     return (
       <div className='Comments'>
         <ul>
@@ -35,9 +55,14 @@ function getBody(comments, isOpen, articleId) {
               <Comment id = {id} />
             </li>)}
         </ul>
-        <UserForm id={articleId} />
+        <UserForm id={id} />
       </div>
     )
   }
+}
 
-export default toggleOpen(CommentList);
+
+export default connect(
+  null,
+  { loadArticleComments }
+)(toggleOpen(CommentList));
