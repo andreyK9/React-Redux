@@ -18,7 +18,7 @@ class ArticleList extends Component {
 
   componentDidMount() {
     const { loaded, loading, loadAllArticles } = this.props
-    if(!loading || !loaded)loadAllArticles()
+    if(!loading && !loaded)loadAllArticles()
   }
 
   render() {
