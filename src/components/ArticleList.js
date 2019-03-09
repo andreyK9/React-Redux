@@ -1,11 +1,10 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Article from './Article'
-import accordion from'../decorator/accordion'
 import { connect } from 'react-redux'
-import {filtrateArticlesSelector} from '../selectors'
-import {loadAllArticles} from '../AC'
+import { filtrateArticlesSelector } from '../selectors'
+import { loadAllArticles } from '../AC'
 import Loader from './Loader'
+import { NavLink } from "react-router-dom";
 
 class ArticleList extends Component {
   static propTypes = {
@@ -13,28 +12,31 @@ class ArticleList extends Component {
     articles: PropTypes.array.isRequired,
     // from accordion
     openArticleId: PropTypes.string,
-    toggleOpenArticle: PropTypes.func.isRequired
+    // toggleOpenArticle: PropTypes.func.isRequired
   }
 
   componentDidMount() {
     const { loaded, loading, loadAllArticles } = this.props
-    if(!loading && !loaded)loadAllArticles()
+    if (!loading && !loaded) loadAllArticles()
   }
 
   render() {
-    const { articles, openArticleId, toggleOpenArticle, loading } = this.props;
-    if(loading) return <Loader />
-    
-    const articleElements = articles.map(article => 
-      <li key={article.id}>
-        <Article
-          article={article}
-          isOpen={article.id === openArticleId}
-          toggleOpen={toggleOpenArticle(article.id)} />
+    const { articles, loading } = this.props;
+
+    if (loading) return <Loader />
+
+    const articleElements = articles.map(article =>
+      <li key={ article.id }>
+        <NavLink
+          to={ `/articles/${article.id}` }
+          activeStyle={ { color: 'red' } }
+        >
+          { article.title }
+        </NavLink>
       </li>);
     return (
       <ul>
-        {articleElements}
+        { articleElements }
       </ul>
     )
   }
@@ -44,4 +46,4 @@ export default connect(state => ({
   articles: filtrateArticlesSelector(state),
   loading: state.articles.loading,
   loaded: state.articles.loaded
-}), { loadAllArticles })(accordion(ArticleList))
+}), { loadAllArticles })(ArticleList)
