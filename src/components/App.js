@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import Articles from './routes/Articles';
 import Counter from './Counter';
 import Filters from './Filters';
-import { HashRouter as Router, Route, NavLink } from 'react-router-dom';
+import Newarticle from './routes/Newarticle';
+import NotFound from './routes/NotFound';
+import {
+  BrowserRouter as Router,
+  Route, NavLink, Switch
+} from 'react-router-dom';
 
 class App extends Component {
   static propTypes = {
@@ -41,9 +46,13 @@ class App extends Component {
             </NavLink>
             </div>
           </div>
-          <Route path='/counter' component={ Counter } />
-          <Route path='/filters' component={ Filters } />
-          <Route path='/articles' component={ Articles } />
+          <Switch>
+            <Route path='/counter' component={ Counter } />
+            <Route path='/filters' component={ Filters } />
+            <Route path='/articles/new' component={ Newarticle } />
+            <Route path='/articles' component={ Articles } />
+            <Route path='*' component={ NotFound } />
+          </Switch>
         </div>
       </Router>
     )
