@@ -5,6 +5,7 @@ import Articles from './routes/Articles';
 import CommentsPage from "./routes/CommentsPage";
 import Counter from './Counter';
 import Filters from './Filters';
+import UserForm from "./UserForm";
 import Newarticle from './routes/Newarticle';
 import NotFound from './routes/NotFound';
 import { Route, NavLink, Switch } from 'react-router-dom';
@@ -15,6 +16,20 @@ class App extends Component {
   static propTypes = {
 
   };
+
+  static childContextTypes = {
+    user: PropTypes.string
+  };
+
+  getChildContext() {
+    return {
+      user: this.state.userName
+    }
+  }
+
+  state = {
+    userName: '',
+  }
 
   render() {
     return (
@@ -47,6 +62,9 @@ class App extends Component {
             </NavLink>
             </div>
           </div>
+          <UserForm 
+            value={this.state.userName} 
+            onChange={this.handleUserChange} />
           <Switch>
             <Route path='/counter' component={ Counter } />
             <Route path='/filters' component={ Filters } />
@@ -59,5 +77,7 @@ class App extends Component {
       </ConnectedRouter>
     )
   }
+
+  handleUserChange = (userName) => this.setState({ userName })
 }
 export default App

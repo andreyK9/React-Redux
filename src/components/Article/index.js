@@ -59,19 +59,6 @@ class Article extends Component {
     )
   }
 
-  // setContainerRef = ref => {
-  //   this.container = ref;
-  //   console.log('---', ref);
-  // }
-
-  // setCommentRef = ref => {
-  //   console.log('---', ref);
-  // }
-
-  // componentDidMount() {
-  //   console.log('---', 'mounted')
-  // };
-
   handleDelete = () => {
     const { deleteArticle, article } = this.props
     deleteArticle(article.id)
@@ -95,4 +82,4 @@ class Article extends Component {
 
 export default connect((state, ownProps) => ({
   article: state.articles.entities.get(ownProps.id)
-}), { deleteArticle, loadArticle })(Article);
+}), { deleteArticle, loadArticle }, null, {pure: false})(Article);

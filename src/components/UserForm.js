@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {createComment} from '../AC';
+import { connect } from 'react-redux';
+import { createComment } from '../AC';
 
 const limits = {
   user: {
@@ -25,16 +25,17 @@ class UserForm extends Component {
   }
 
   render() {
-    const { user, text } = this.state
+    const { text } = this.state;
+    const { value } = this.props;
 
     return (
       <div>
         <h3>Add comment:</h3>
-        <form onSubmit={this.addNewComment}>
+        <form onSubmit={ this.addNewComment }>
           <label>Name:
             <input
               type="text"
-              value={ user }
+              value={ value }
               onChange={ this.handleChange('user') } />
           </label>
           <br />
@@ -47,17 +48,18 @@ class UserForm extends Component {
               onChange={ this.handleChange('text') } />
           </label>
           <div>
-            <input type="submit" value="add comment"/>
+            <input type="submit" value="add comment" />
           </div>
-        </form>      
+        </form>
       </div>
     )
   }
 
   addNewComment = (evt) => {
-    evt.preventDefault()
-    const {user, text} = this.state
-    const {id, createComment} = this.props
+    evt.preventDefault();
+
+    const { user, text } = this.state
+    const { id, createComment } = this.props
 
     const newComment = {
       text: text,
@@ -82,9 +84,7 @@ class UserForm extends Component {
 
     style.borderColor = value.length < limits[property].MIN ? 'red' : null;
 
-    this.setState({
-      [property]: value
-    })
+    this.props.onChange(value);
   }
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import UserForm from './UserForm';
 import Comment from './Comment';
 import toggleOpen from '../decorator/toggleOpen'
-import {loadArticleComments} from '../AC'
+import { loadArticleComments } from '../AC'
 import Loader from './Loader'
 
 
@@ -16,46 +16,55 @@ class CommentList extends React.Component {
     toggleOpen: PropTypes.func.isRequired
   }
 
-  componentWillReceiveProps({isOpen, article, loadArticleComments}) {
-    if(!this.props.isOpen && isOpen && !article.commentsLoading && !article.commentsLoaded) {
+  static contextTypes = {
+    store: PropTypes.object,
+    router: PropTypes.object,
+    user: PropTypes.string,
+  }
+
+  componentWillReceiveProps({ isOpen, article, loadArticleComments }) {
+    if (!this.props.isOpen && isOpen && !article.commentsLoading && !article.commentsLoaded) {
       loadArticleComments(article.id)
     }
   }
 
-  render(){
-    const {isOpen, toggleOpen, article} = this.props
-    
+  render() {
+    const { isOpen, toggleOpen, article } = this.props
+
+    console.log('---', 3, this.context);
+
     return (
       <div className='Comments'>
-        <button onClick = {toggleOpen}>
-          {isOpen ? 'hide comment' : 'show comment'}
+        <p>User: { this.context.user }</p>
+        <button onClick={ toggleOpen }>
+          { isOpen ? 'hide comment' : 'show comment' }
         </button>
-        {this.getBody({isOpen, article})}
+        { this.getBody({ isOpen, article }) }
       </div>
     )
   }
 
-  getBody({isOpen, article:{comments = [], commentsLoading, commentsLoaded, id }}) {
-    if(!isOpen) return null;
-    if(commentsLoading) return <Loader />
-    if(!commentsLoaded) return null
+  getBody({ isOpen, article: { comments = [], commentsLoading, commentsLoaded, id } }) {
+    if (!isOpen) return null;
+    if (commentsLoading) return <Loader />
+    if (!commentsLoaded) return null
 
-    if(!comments.length) return (
+    if (!comments.length) return (
       <div>
         <p>No comments ...</p>;
-        <UserForm id={id} />
+        <UserForm id={ id } />
       </div>
     )
-      
+
     return (
       <div className='Comments'>
         <ul>
-          {comments.map(id => 
-            <li key={id}>
-              <Comment id = {id} />
-            </li>)}
+          { comments.map(id =>
+            <li key={ id }>
+              <Comment id={ id } />
+            </li>) }
         </ul>
-        <UserForm id={id} />
+        <UserForm id={ id } />
       </div>
     )
   }
@@ -64,5 +73,7 @@ class CommentList extends React.Component {
 
 export default connect(
   null,
-  { loadArticleComments }
+  { loadArticleComments },
+  null,
+  { pure: false }
 )(toggleOpen(CommentList));
