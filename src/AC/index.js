@@ -1,7 +1,7 @@
-import { 
-  DELETE_ARTICLE, 
+import {
+  DELETE_ARTICLE,
   INCREMENT,
-  CHANGE_DATE_RANGE, 
+  CHANGE_DATE_RANGE,
   CHANGE_SELECTION,
   CREATE_COMMENT,
   LOAD_ARTICLE,
@@ -9,7 +9,8 @@ import {
   START,
   FAIL,
   SUCCESS,
-  LOAD_ARTICLE_COMMENTS
+  LOAD_ARTICLE_COMMENTS,
+  LOAD_COMMENTS_FOR_PAGE
 } from '../constants'
 
 export function increment() {
@@ -62,8 +63,8 @@ export function loadArticle(id) {
     })
 
     setTimeout(() => {
-      fetch(`/api/article/${ id }`)
-        .then( res => res.json())
+      fetch(`/api/article/${id}`)
+        .then(res => res.json())
         .then(response => dispatch({
           type: LOAD_ARTICLE + SUCCESS,
           payload: { id, response }
@@ -89,5 +90,19 @@ export function loadArticleComments(articleId) {
     type: LOAD_ARTICLE_COMMENTS,
     payload: { articleId },
     callAPI: `/api/comment?article=${articleId}`
+  }
+};
+
+export function checkAndLoadCommentsForPage(page) {
+  return (dispatch, getState) => {
+    const { comments: { pagination } } = getState();
+
+    if(pagination.getIn([page, 'loading']) || pagination.getIn([page, 'ids'])) return null;
+
+    dispatch({
+      type: LOAD_COMMENTS_FOR_PAGE,
+      payload: {page},
+      callAPI: `/api/comment?limit=5&offset=${(page-1) * 5}`
+    })
   }
 }
