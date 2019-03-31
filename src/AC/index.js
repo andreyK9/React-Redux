@@ -13,6 +13,8 @@ import {
   LOAD_COMMENTS_FOR_PAGE
 } from '../constants'
 
+import { push, replace } from "react-router-redux";
+
 export function increment() {
   return {
     type: INCREMENT
@@ -64,15 +66,25 @@ export function loadArticle(id) {
 
     setTimeout(() => {
       fetch(`/api/article/${id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (res.status >= 400) {
+            throw new Error(res.statusText);
+          }
+
+          return res.json();
+        })
         .then(response => dispatch({
           type: LOAD_ARTICLE + SUCCESS,
           payload: { id, response }
         }))
-        .catch(error => dispatch({
-          type: LOAD_ARTICLE + FAIL,
-          payload: { id, error }
-        }))
+        .catch((error) => {
+          dispatch({
+            type: LOAD_ARTICLE + FAIL,
+            payload: { id, error }
+          });
+
+          dispatch(replace('/error'));
+        })
     }, 1000)
   }
 }
@@ -97,12 +109,12 @@ export function checkAndLoadCommentsForPage(page) {
   return (dispatch, getState) => {
     const { comments: { pagination } } = getState();
 
-    if(pagination.getIn([page, 'loading']) || pagination.getIn([page, 'ids'])) return null;
+    if (pagination.getIn([page, 'loading']) || pagination.getIn([page, 'ids'])) return null;
 
     dispatch({
       type: LOAD_COMMENTS_FOR_PAGE,
-      payload: {page},
-      callAPI: `/api/comment?limit=5&offset=${(page-1) * 5}`
+      payload: { page },
+      callAPI: `/api/comment?limit=5&offset=${(page - 1) * 5}`
     })
   }
 }
